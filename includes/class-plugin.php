@@ -30,6 +30,8 @@ class Plugin {
 		}
 
 		add_filter( 'acf/fields/relationship/result', [ $this, 'add_edit_link' ], 10, 3 );
+		add_filter( 'acf/fields/taxonomy/result', [ $this, 'add_edit_link' ], 10, 3 );
+		add_filter( 'acf/fields/post_object/result', [ $this, 'add_edit_link' ], 10, 3 );
 		add_filter( 'acf/input/admin_head', [ $this, 'output_css' ], 10, 3 );
 		add_filter( 'acf/input/admin_head', [ $this, 'output_js' ], 10, 3 );
 	}
@@ -39,7 +41,7 @@ class Plugin {
 			return $title;
 		}
 
-		$edit_url = get_edit_post_link( $post );
+		(get_class($post) == 'WP_Term') ? $edit_url = get_edit_term_link($post) : $edit_url = get_edit_post_link($post);
 
 		if ( empty( $edit_url ) ) {
 			return $title;
@@ -94,3 +96,4 @@ class Plugin {
 		<?php
 	}
 }
+
